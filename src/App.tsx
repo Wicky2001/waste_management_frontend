@@ -8,7 +8,7 @@ import DustBins from "./pages/dust-bins/dust-bins.component";
 
 function App() {
   return (
-    <div className="app-container">
+    <div id="app" className="app-container">
       <NavBar></NavBar>
 
       <div className="main-container">

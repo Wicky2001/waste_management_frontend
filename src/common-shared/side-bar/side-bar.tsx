@@ -1,4 +1,5 @@
 import type { SidebarProps } from "../types";
+import { createPortal } from "react-dom";
 
 const SideBar = ({
   isOpen,
@@ -7,7 +8,7 @@ const SideBar = ({
   description,
   children,
 }: SidebarProps) => {
-  return (
+  return createPortal(
     <>
       {/* Background Overlay */}
       {isOpen && (
@@ -19,9 +20,10 @@ const SideBar = ({
 
       {/* Sidebar Panel - Left Aligned */}
       <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
+        className={`fixed top-0 left-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ zIndex: 9999 }}
       >
         {/* Header Section */}
         <div className="px-6 py-5 border-b border-slate-200 bg-slate-50">
@@ -56,7 +58,8 @@ const SideBar = ({
         {/* Body Section (Scrollable) */}
         <div className="flex-1 p-6 overflow-y-auto bg-white">{children}</div>
       </div>
-    </>
+    </>,
+    document.body,
   );
 };
 

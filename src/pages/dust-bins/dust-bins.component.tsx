@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import type { TableRow } from "../../common-shared/types";
 import CommonTable from "../../common-shared/table/table-component";
 import PageHeader from "../../common-shared/page-header/header";
+import SideBar from "../../common-shared/side-bar/side-bar";
 import { fetchGateways } from "./service";
 import { Trash } from "lucide-react";
 
@@ -11,6 +12,9 @@ const DustBins = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [lastSynced, setLastSynced] = useState<string>("");
   const [searchText, setSearchText] = useState("");
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  debugger;
+  const [row, setRow] = useState<TableRow | null>(null);
 
   const offsetRef = useRef(0);
   const isFetchingRef = useRef(false);
@@ -68,32 +72,53 @@ const DustBins = () => {
     { headerName: "Created At", field: "createdAt", width: 250 },
   ];
 
-  return (
-    <div className="h-full w-full bg-slate-50 flex flex-col overflow-hidden">
-      <div className="w-full flex flex-col p-4 sm:p-6  overflow-hidden">
-        <PageHeader
-          title="Bins Management"
-          description="Add and manage your garbage bins here. Once added, you can view them on the map and easily edit or remove their details."
-          Icon={Trash}
-        />
+  const editClicked = (row: any) => {
+    setIsSidebarVisible(true);
+    debugger;
+    setRow(row);
+  };
 
-        <div className="w-full overflow-hidden">
-          <CommonTable
-            cols={columns}
-            rows={data}
-            loading={loading}
-            totalRecords={totalRecords}
-            lastSynced={lastSynced}
-            showEdit={true}
-            showDelete={true}
-            onEdit={(row) => console.log("Edit", row)}
-            onDelete={(row) => console.log("Delete", row)}
-            onSearchChange={handleSearch}
-            onLoadMore={() => loadData(false)}
+  const onClose = () => {
+    setIsSidebarVisible(false);
+  };
+
+  return (
+    <>
+      <div className="h-full w-full bg-slate-50 flex flex-col overflow-hidden">
+        <div className="w-full flex flex-col p-4 sm:p-6  overflow-hidden">
+          <PageHeader
+            title="Bins Management"
+            description="Add and manage your garbage bins here. Once added, you can view them on the map and easily edit or remove their details."
+            Icon={Trash}
           />
+
+          <div className="w-full overflow-hidden">
+            <CommonTable
+              cols={columns}
+              rows={data}
+              loading={loading}
+              totalRecords={totalRecords}
+              lastSynced={lastSynced}
+              showEdit={true}
+              showDelete={true}
+              onEdit={editClicked}
+              onDelete={(row) => console.log("Delete", row)}
+              onSearchChange={handleSearch}
+              onLoadMore={() => loadData(false)}
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      <SideBar
+        isOpen={isSidebarVisible}
+        onClose={onClose}
+        title="Edit Bin"
+        description="You can edit your bin details"
+      >
+        <div> form</div>
+      </SideBar>
+    </>
   );
 };
 
