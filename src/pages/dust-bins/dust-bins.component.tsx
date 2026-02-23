@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import type {
-  TableRow,
-  TableGetRequestParams,
-} from "../../common-shared/types";
+import type { TableRow } from "../../common-shared/types";
 import CommonTable from "../../common-shared/table/table-component";
+import { fetchGateways } from "./service";
 
 const DustBins = () => {
   const [loading, setLoading] = useState(false);
@@ -16,36 +14,6 @@ const DustBins = () => {
   const isFetchingRef = useRef(false);
   const pageSize = 50;
 
-  const gatewayApi = {
-    fetchGateways: async ({ start, end, search }: TableGetRequestParams) => {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      const count = end - start;
-      const records = Array.from({ length: count }).map((_, i) => ({
-        id: `gw-${start + i}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-        name: `${search || "Gateway"} Node #${start + i + 1}`,
-        coordinates: `${(Math.random() * 90).toFixed(4)}, ${(Math.random() * 180).toFixed(4)}`,
-        notes: "System-generated node data",
-        createdAt: "",
-      }));
-
-      return {
-        records,
-        total: 500,
-        timestamp: "",
-      };
-    },
-
-    deleteGateway: async (id: number) => {
-      await new Promise((r) => setTimeout(r, 500));
-      return { success: true };
-    },
-
-    updateGateway: async (id: number, data: any) => {
-      await new Promise((r) => setTimeout(r, 500));
-      return { success: true };
-    },
-  };
-
   const loadData = useCallback(
     async (isInitial = false, query = searchText) => {
       if (isFetchingRef.current) return;
@@ -57,7 +25,7 @@ const DustBins = () => {
       const end = start + pageSize;
 
       try {
-        const result = await gatewayApi.fetchGateways({
+        const result = await fetchGateways({
           start,
           end,
           search: query,
