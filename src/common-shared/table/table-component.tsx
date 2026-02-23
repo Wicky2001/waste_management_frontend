@@ -66,7 +66,7 @@ const CommonTable = React.memo(
     return (
       <div className="flex flex-col h-full w-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 border-b border-slate-100 bg-slate-50/50 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
           <div className="relative w-full sm:w-80">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -88,7 +88,7 @@ const CommonTable = React.memo(
                 <span>Synced: {lastSynced}</span>
               </div>
             )}
-            <div className="h-4 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
+            <div className="h-4 w-px bg-slate-200 mx-1 hidden sm:block"></div>
             <span className="px-2 py-1 bg-slate-100 rounded-md font-bold text-slate-700">
               {rows.length} / {totalRecords}
             </span>
@@ -98,7 +98,7 @@ const CommonTable = React.memo(
         {/* Main Scrollable Table Body */}
         <div
           onScroll={handleScroll}
-          className="overflow-auto flex-grow relative scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100"
+          className="overflow-auto grow relative scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100"
         >
           <table className="w-full text-left border-collapse min-w-[900px]">
             <thead className="sticky top-0 z-30 shadow-sm">
