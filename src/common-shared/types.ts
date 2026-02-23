@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 export type TableColumn = {
   field: string;
   headerName: string;
@@ -27,4 +29,10 @@ export type TableGetRequestParams = {
   start: number;
   end: number;
   search: string;
+};
+
+export type PageHeaderProps = {
+  Icon: LucideIcon;
+  title: string;
+  description: string;
 };

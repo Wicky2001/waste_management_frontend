@@ -64,7 +64,7 @@ const CommonTable = React.memo(
     };
 
     return (
-      <div className="flex flex-col h-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+      <div className="flex flex-col h-full w-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 border-b border-slate-100 bg-slate-50/50 flex-shrink-0">
           <div className="relative w-full sm:w-80">

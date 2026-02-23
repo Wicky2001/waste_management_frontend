@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import type { TableRow } from "../../common-shared/types";
 import CommonTable from "../../common-shared/table/table-component";
+import PageHeader from "../../common-shared/page-header/header";
 import { fetchGateways } from "./service";
+import { Trash } from "lucide-react";
 
 const DustBins = () => {
   const [loading, setLoading] = useState(false);
@@ -67,18 +69,15 @@ const DustBins = () => {
   ];
 
   return (
-    <div className="h-full bg-slate-50 flex flex-col overflow-hidden">
-      <div className="flex-grow flex flex-col p-4 sm:p-8 max-w-7xl mx-auto w-full overflow-hidden">
-        <header className="mb-6 flex-shrink-0">
-          <h1 className="text-3xl font-extrabold text-slate-900">
-            Fleet Monitoring
-          </h1>
-          <p className="text-slate-500">
-            Professional light interface with automated data fetching.
-          </p>
-        </header>
+    <div className="h-full w-full bg-slate-50 flex flex-col overflow-hidden">
+      <div className="w-full flex flex-col p-4 sm:p-6  overflow-hidden">
+        <PageHeader
+          title="Bins Management"
+          description="Add and manage your garbage bins here. Once added, you can view them on the map and easily edit or remove their details."
+          Icon={Trash}
+        />
 
-        <div className="flex-grow overflow-hidden">
+        <div className="w-full overflow-hidden">
           <CommonTable
             cols={columns}
             rows={data}
