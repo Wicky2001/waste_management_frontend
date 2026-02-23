@@ -98,7 +98,7 @@ const CommonTable = React.memo(
         {/* Main Scrollable Table Body */}
         <div
           onScroll={handleScroll}
-          className="overflow-auto flex-grow relative scrollbar-thin scrollbar-thumb-slate-200"
+          className="overflow-auto flex-grow relative scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100"
         >
           <table className="w-full text-left border-collapse min-w-[900px]">
             <thead className="sticky top-0 z-30 shadow-sm">

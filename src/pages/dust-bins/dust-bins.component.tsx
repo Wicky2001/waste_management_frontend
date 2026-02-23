@@ -67,7 +67,7 @@ const DustBins = () => {
   ];
 
   return (
-    <div className="h-screen w-screen bg-slate-50 flex flex-col overflow-hidden">
+    <div className="h-full bg-slate-50 flex flex-col overflow-hidden">
       <div className="flex-grow flex flex-col p-4 sm:p-8 max-w-7xl mx-auto w-full overflow-hidden">
         <header className="mb-6 flex-shrink-0">
           <h1 className="text-3xl font-extrabold text-slate-900">
