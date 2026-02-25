@@ -7,8 +7,9 @@ import { fetchDrivers } from "./service";
 import { CircleUserRound } from "lucide-react";
 import SideBar from "../../common-shared/side-bar/side-bar";
 import { deleteDrivers } from "./service";
+import DriverForm from "./form";
 
-const DustBins = () => {
+const Drivers = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<TableRow[]>([]);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -29,7 +30,7 @@ const DustBins = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const onEditClicked = async (data: TableRow) => {
-    setSelectedMode(Mode.EDIT);
+    setSelectedMode(Mode.ADD);
     setIsSideBarVisible(true);
     setPatchData(data);
   };
@@ -132,10 +133,21 @@ const DustBins = () => {
       <SideBar
         isOpen={isSideBarVisible}
         onClose={onCloseSideBar}
-        title={selectedMode == Mode.ADD ? "Add" : "Edit" + " Driver"}
-      ></SideBar>
+        title={selectedMode == Mode.ADD ? "Add" : "Edit"}
+        description={
+          selectedMode == Mode.ADD
+            ? "Add new driver"
+            : "Edit existing driver details"
+        }
+      >
+        <DriverForm
+          mode={selectedMode}
+          patchData={patchData}
+          onSubmitSuccess={() => console.log("hello")}
+        />
+      </SideBar>
     </>
   );
 };
 
-export default DustBins;
+export default Drivers;

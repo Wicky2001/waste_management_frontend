@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./pages/nav-bar/nav-bar-component";
 import MainMap from "./pages/main-map/map-component";
 import DustBins from "./pages/dust-bins/dust-bins.component";
+import Drivers from "./pages/drivers/drivers-component";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/map" element={<MainMap />} />
           <Route path="/bins" element={<DustBins />} />
+          <Route path="/drivers" element={<Drivers />} />
         </Routes>
       </div>
     </div>

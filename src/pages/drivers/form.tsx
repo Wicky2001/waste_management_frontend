@@ -1,9 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { CheckCircle2, Loader2, AlertCircle, ChevronDown } from "lucide-react";
-import { Mode } from "../../common-shared/helpers";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from "@headlessui/react";
+import { Mode, Statuses } from "../../common-shared/helpers";
 import type { TableRow } from "../../common-shared/types";
 
 const driverSchema = z.object({
@@ -20,101 +26,16 @@ interface DriverFormProps {
   onSubmitSuccess: (data: DriverFormValues) => void;
 }
 
-interface CustomDropdownProps {
-  value: string;
-  onSelectionChange: (value: string) => void;
-  options: { value: string; label: string }[];
-  placeholder?: string;
-  error?: boolean;
-}
-
-const CustomDropdown = ({
-  value,
-  onSelectionChange,
-  options,
-  placeholder = "Select an option",
-  error = false,
-}: CustomDropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const selectedOption = options.find((option) => option.value === value);
-
-  return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 cursor-pointer text-left flex items-center justify-between ${
-          error
-            ? "border-red-200 focus:ring-red-50"
-            : "border-emerald-100 focus:ring-emerald-100 focus:border-emerald-500 hover:bg-emerald-50"
-        }`}
-      >
-        <span className={selectedOption ? "text-gray-900" : "text-gray-500"}>
-          {selectedOption ? selectedOption.label : placeholder}
-        </span>
-        <ChevronDown
-          size={18}
-          className={`text-emerald-600 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-emerald-200 rounded-xl shadow-lg z-50 overflow-hidden">
-          {options.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => {
-                onSelectionChange(option.value);
-                setIsOpen(false);
-              }}
-              className={`w-full px-4 py-3 text-left hover:bg-emerald-100 transition-colors border-none outline-none ${
-                option.value === value
-                  ? "bg-emerald-50 text-emerald-900 font-medium"
-                  : "text-gray-700 hover:text-emerald-800"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
 const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  const statusOptions = [
-    { value: "active", label: "Active" },
-    { value: "inactive", label: "Inactive" },
-    { value: "on-leave", label: "On Leave" },
-  ];
+  const [selectedStatus, setSelectedStatus] = useState(Statuses[0]);
 
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<DriverFormValues>({
     resolver: zodResolver(driverSchema),
@@ -173,7 +94,7 @@ const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
         <input
           {...register("name")}
           placeholder="e.g. John Doe"
-          className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 ${
+          className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 text-black ${
             errors.name
               ? "border-red-200 focus:ring-red-50"
               : "border-emerald-100 focus:ring-emerald-100 focus:border-emerald-500"
@@ -193,7 +114,7 @@ const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
         <input
           {...register("phone")}
           placeholder="+1 (555) 000-0000"
-          className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 ${
+          className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 text-black ${
             errors.phone
               ? "border-red-200 focus:ring-red-50"
               : "border-emerald-100 focus:ring-emerald-100 focus:border-emerald-500"
@@ -210,13 +131,40 @@ const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
         <label className="text-sm font-bold text-emerald-800">
           Driver Status <span className="text-red-500">*</span>
         </label>
-        <CustomDropdown
-          value={watch("status")}
-          onSelectionChange={(value) => setValue("status", value)}
-          options={statusOptions}
-          placeholder="Select driver status"
-          error={!!errors.status}
-        />
+        <Listbox
+          value={selectedStatus}
+          onChange={(status) => {
+            setSelectedStatus(status);
+            setValue("status", status.key);
+          }}
+        >
+          <div className="relative">
+            <ListboxButton
+              className={`w-full px-4 py-2.5 bg-emerald-50/30 border rounded-xl outline-none transition-all focus:ring-4 cursor-pointer text-left flex items-center justify-between ${
+                errors.status
+                  ? "border-red-200 focus:ring-red-50"
+                  : "border-emerald-100 focus:ring-emerald-100 focus:border-emerald-500 hover:bg-emerald-50"
+              }`}
+            >
+              <span className="text-gray-900">{selectedStatus.key}</span>
+              <ChevronDown
+                size={18}
+                className="text-emerald-600 data-open:rotate-180 transition-transform duration-200"
+              />
+            </ListboxButton>
+            <ListboxOptions className="absolute top-full left-0 w-full mt-1 rounded-xl border border-emerald-200 bg-white p-1 shadow-lg focus:outline-none">
+              {Statuses.map((status) => (
+                <ListboxOption
+                  key={status.value}
+                  value={status}
+                  className="py-3 px-4 cursor-pointer select-none transition-colors rounded-lg text-gray-800 data-focus:bg-emerald-100 data-focus:text-emerald-800 data-selected:bg-emerald-200 data-selected:text-emerald-900 data-selected:font-medium"
+                >
+                  {status.key}
+                </ListboxOption>
+              ))}
+            </ListboxOptions>
+          </div>
+        </Listbox>
         {errors.status && (
           <p className="text-xs font-bold text-red-500 flex items-center gap-1">
             <AlertCircle size={12} /> {errors.status.message}

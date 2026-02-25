@@ -7,5 +7,5 @@ export type Mode = (typeof Mode)[keyof typeof Mode];
 
 export const Statuses = [
   { key: "Active", value: 1, color: "#C00707" },
-  { key: "Offline", value: 2, coloe: "#48A111" },
+  { key: "Offline", value: 2, color: "#48A111" },
 ];

@@ -56,7 +56,9 @@ const SideBar = ({
         </div>
 
         {/* Body Section (Scrollable) */}
-        <div className="flex-1 p-6 overflow-y-auto bg-green-50">{children}</div>
+        <div className="flex-1 p-6 overflow-y-auto  bg-green-50">
+          {children}
+        </div>
       </div>
     </>,
     document.body,
