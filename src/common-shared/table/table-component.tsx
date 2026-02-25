@@ -133,9 +133,12 @@ const CommonTable = React.memo(
                     </div>
                   </th>
                 ))}
-                <th className="p-4 text-xs font-semibold text-slate-600 uppercase tracking-wider text-right border-b border-slate-200 bg-slate-50 w-32">
-                  Actions
-                </th>
+
+                {(showDelete || showEdit) && (
+                  <th className="p-4 text-xs font-semibold text-slate-600 uppercase tracking-wider text-right border-b border-slate-200 bg-slate-50 w-32">
+                    Actions
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -152,26 +155,28 @@ const CommonTable = React.memo(
                       {renderCellValue(row[col.field])}
                     </td>
                   ))}
-                  <td className="p-4 text-right w-32">
-                    <div className="flex items-center justify-end gap-2">
-                      {showEdit && (
-                        <button
-                          onClick={() => onEdit?.(row)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
-                        >
-                          <Edit2 size={16} />
-                        </button>
-                      )}
-                      {showDelete && (
-                        <button
-                          onClick={() => onDelete?.(row)}
-                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      )}
-                    </div>
-                  </td>
+                  {(showDelete || showEdit) && (
+                    <td className="p-4 text-right w-32">
+                      <div className="flex items-center justify-end gap-2">
+                        {showEdit && (
+                          <button
+                            onClick={() => onEdit?.(row)}
+                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                        )}
+                        {showDelete && (
+                          <button
+                            onClick={() => onDelete?.(row)}
+                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

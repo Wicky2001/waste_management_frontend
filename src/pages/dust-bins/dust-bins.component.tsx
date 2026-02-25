@@ -2,7 +2,6 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import type { TableRow } from "../../common-shared/types";
 import CommonTable from "../../common-shared/table/table-component";
 import PageHeader from "../../common-shared/page-header/header";
-import SideBar from "../../common-shared/side-bar/side-bar";
 import { fetchGateways } from "./service";
 import { Trash } from "lucide-react";
 
@@ -12,9 +11,6 @@ const DustBins = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [lastSynced, setLastSynced] = useState<string>("");
   const [searchText, setSearchText] = useState("");
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  debugger;
-  const [row, setRow] = useState<TableRow | null>(null);
 
   const offsetRef = useRef(0);
   const isFetchingRef = useRef(false);
@@ -66,59 +62,41 @@ const DustBins = () => {
   }, []);
 
   const columns = [
-    { headerName: "Name", field: "name", width: 250 },
-    { headerName: "Coordinates", field: "coordinates", width: 220 },
-    { headerName: "Notes", field: "notes" },
+    { headerName: "Id", field: "code", width: 250 },
+    { headerName: "Service Area", field: "serviceArea", width: 220 },
+    {
+      headerName: "Sensor",
+      field: "sensorSerialNumber",
+      width: 220,
+    },
+    { headerName: "Sensor Status", field: "sensorStatus", width: 220 },
     { headerName: "Created At", field: "createdAt", width: 250 },
   ];
 
-  const editClicked = (row: any) => {
-    setIsSidebarVisible(true);
-    debugger;
-    setRow(row);
-  };
-
-  const onClose = () => {
-    setIsSidebarVisible(false);
-  };
-
   return (
-    <>
-      <div className="h-full w-full bg-slate-50 flex flex-col overflow-hidden">
-        <div className="w-full flex flex-col p-4 sm:p-6  overflow-hidden">
-          <PageHeader
-            title="Bins Management"
-            description="Add and manage your garbage bins here. Once added, you can view them on the map and easily edit or remove their details."
-            Icon={Trash}
-          />
+    <div className="h-full w-full bg-slate-50 flex flex-col overflow-hidden">
+      <div className="w-full flex flex-col p-4 sm:p-6  overflow-hidden">
+        <PageHeader
+          title="Bins Management"
+          description="Monitor all your garbage bins in one place. View details, track sensor status, and keep your waste collection organized."
+          Icon={Trash}
+        />
 
-          <div className="w-full overflow-hidden">
-            <CommonTable
-              cols={columns}
-              rows={data}
-              loading={loading}
-              totalRecords={totalRecords}
-              lastSynced={lastSynced}
-              showEdit={true}
-              showDelete={true}
-              onEdit={editClicked}
-              onDelete={(row) => console.log("Delete", row)}
-              onSearchChange={handleSearch}
-              onLoadMore={() => loadData(false)}
-            />
-          </div>
+        <div className="w-full overflow-hidden">
+          <CommonTable
+            cols={columns}
+            rows={data}
+            loading={loading}
+            totalRecords={totalRecords}
+            lastSynced={lastSynced}
+            showEdit={false}
+            showDelete={false}
+            onSearchChange={handleSearch}
+            onLoadMore={() => loadData(false)}
+          />
         </div>
       </div>
-
-      <SideBar
-        isOpen={isSidebarVisible}
-        onClose={onClose}
-        title="Edit Bin"
-        description="You can edit your bin details"
-      >
-        <div> form</div>
-      </SideBar>
-    </>
+    </div>
   );
 };
 

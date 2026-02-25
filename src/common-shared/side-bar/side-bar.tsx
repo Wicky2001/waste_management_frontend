@@ -20,18 +20,18 @@ const SideBar = ({
 
       {/* Sidebar Panel - Left Aligned */}
       <div
-        className={`fixed top-0 left-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
+        className={`fixed top-0 left-0 h-full w-full sm:w-96 bg-green-50 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ zIndex: 9999 }}
       >
         {/* Header Section */}
-        <div className="px-6 py-5 border-b border-slate-200 bg-slate-50">
+        <div className="px-6 py-5 border-b border-green-200 bg-green-100">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-800">{title}</h2>
+            <h2 className="text-xl font-semibold text-green-800">{title}</h2>
             <button
               onClick={onClose}
-              className="p-2 -mr-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-slate-300"
+              className="p-2 -mr-2 text-green-400 hover:text-green-600 hover:bg-green-200 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-300"
               aria-label="Close sidebar"
             >
               <svg
@@ -51,12 +51,12 @@ const SideBar = ({
           </div>
           {/* Description */}
           {description && (
-            <p className="mt-2 text-sm text-slate-500">{description}</p>
+            <p className="mt-2 text-sm text-green-600">{description}</p>
           )}
         </div>
 
         {/* Body Section (Scrollable) */}
-        <div className="flex-1 p-6 overflow-y-auto bg-white">{children}</div>
+        <div className="flex-1 p-6 overflow-y-auto bg-green-50">{children}</div>
       </div>
     </>,
     document.body,

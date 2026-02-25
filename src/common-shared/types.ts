@@ -35,6 +35,7 @@ export type PageHeaderProps = {
   Icon: LucideIcon;
   title: string;
   description: string;
+  IconColor?: string;
 };
 
 export type SidebarProps = {
@@ -43,4 +44,10 @@ export type SidebarProps = {
   title: string;
   description: string;
   children: React.ReactNode;
+};
+
+export type NavigationBarProps = {
+  name: string;
+  url: string;
+  Icon: LucideIcon;
 };

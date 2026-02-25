@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import menuItems from "./menue";
 import styles from "./nav-bar-component.module.scss";
 
 const NavBar = () => {
+  const location = useLocation();
+
   return (
     <nav className={styles.mainContainer}>
       <div className={styles.logoArea}>
@@ -16,7 +18,9 @@ const NavBar = () => {
               to={item.url}
               className={`${styles.navLink} ${location.pathname === item.url ? styles.active : ""}`}
             >
-              <span className={styles.icon}>⊞</span>
+              <span className={styles.icon}>
+                <item.Icon />
+              </span>
               <span className={styles.linkText}>{item.name}</span>
             </Link>
           </li>

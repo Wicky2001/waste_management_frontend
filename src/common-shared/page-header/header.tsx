@@ -1,12 +1,17 @@
 import type { PageHeaderProps } from "../types";
 
-const PageHeader = ({ Icon, title, description }: PageHeaderProps) => {
+const PageHeader = ({
+  Icon,
+  title,
+  description,
+  IconColor,
+}: PageHeaderProps) => {
   return (
     <div className="w-full bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm flex items-center transition-all hover:shadow-md">
       <div className="flex flex-row w-full items-center">
         <div className="basis-1/4 sm:basis-1/6 flex items-center justify-center">
           <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-600 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]">
-            <Icon size={30} strokeWidth={2} />
+            <Icon size={30} strokeWidth={2} color={IconColor || "#63A361"} />
           </div>
         </div>
 
