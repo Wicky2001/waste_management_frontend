@@ -7,7 +7,7 @@ export type TableColumn = {
 };
 
 export type TableRow = {
-  id: string | number;
+  id: string;
   [key: string]: unknown;
 };
 
@@ -20,7 +20,7 @@ export type CommonTableProps = {
   showEdit?: boolean;
   showDelete?: boolean;
   onEdit?: (row: TableRow) => void;
-  onDelete?: (row: TableRow) => void;
+  onDelete?: (ids: string[]) => void;
   onSearchChange?: (value: string) => void;
   onLoadMore?: () => void;
 };

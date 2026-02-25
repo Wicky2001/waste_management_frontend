@@ -168,7 +168,7 @@ const CommonTable = React.memo(
                         )}
                         {showDelete && (
                           <button
-                            onClick={() => onDelete?.(row)}
+                            onClick={() => onDelete?.([row.id])}
                             className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
                           >
                             <Trash2 size={16} />
