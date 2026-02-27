@@ -26,9 +26,6 @@ const Drivers = () => {
   // edit props
   const [patchData, setPatchData] = useState<TableRow | null>(null);
 
-  //delete props
-  const [deleteLoading, setDeleteLoading] = useState(false);
-
   const onEditClicked = async (data: TableRow) => {
     setSelectedMode(Mode.EDIT);
     setIsSideBarVisible(true);
@@ -36,10 +33,7 @@ const Drivers = () => {
   };
 
   const onDeleteClicked = async (ids: string[]) => {
-    const result = await deleteDrivers(ids);
-    if (result) {
-      setDeleteLoading(false);
-    }
+    await deleteDrivers(ids);
   };
 
   const onAddClicked = () => {
@@ -67,6 +61,7 @@ const Drivers = () => {
           end,
           search: query,
         });
+
         if (isInitial) {
           setData(result.records as TableRow[]);
           offsetRef.current = pageSize;

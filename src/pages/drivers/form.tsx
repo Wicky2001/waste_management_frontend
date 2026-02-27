@@ -15,7 +15,7 @@ import type { TableRow } from "../../common-shared/types";
 const driverSchema = z.object({
   name: z.string().min(1, "Name is required"),
   phone: z.string().min(10, "Valid phone number is required"),
-  status: z.string().min(1, "Status is required"),
+  status: z.number().min(1, "Status is required"),
 });
 
 type DriverFormValues = z.infer<typeof driverSchema>;
@@ -42,19 +42,27 @@ const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
     defaultValues: {
       name: "",
       phone: "",
-      status: "active",
+      status: 1,
     },
   });
 
   useEffect(() => {
     if (mode === Mode.EDIT && patchData) {
+      const statusValue = (patchData.status as number) || 1;
+      const statusObj =
+        Statuses.find((s) => s.value === statusValue) || Statuses[0];
+      setSelectedStatus(statusObj);
+
+      debugger;
+
       reset({
         name: (patchData.name as string) || "",
         phone: (patchData.phone as string) || "",
-        status: (patchData.status as string) || "active",
+        status: statusValue,
       });
     } else if (mode === Mode.ADD) {
-      reset({ name: "", phone: "", status: "active" });
+      setSelectedStatus(Statuses[0]);
+      reset({ name: "", phone: "", status: 1 });
     }
   }, [patchData, mode, reset]);
 
@@ -135,7 +143,7 @@ const DriverForm = ({ mode, patchData, onSubmitSuccess }: DriverFormProps) => {
           value={selectedStatus}
           onChange={(status) => {
             setSelectedStatus(status);
-            setValue("status", status.key);
+            setValue("status", status.value);
           }}
         >
           <div className="relative">

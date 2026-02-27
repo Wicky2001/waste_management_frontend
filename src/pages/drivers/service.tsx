@@ -9,7 +9,7 @@ const fetchDrivers = async ({ start, end, search }: TableGetRequestParams) => {
     org_id: 1,
     name: `${search || "Driver"} ${start + i + 1}`,
     phone: `07${Math.floor(10000000 + Math.random() * 89999999)}`,
-    is_active: Math.random() > 0.1, // mostly active
+    status: Math.random() > 0.2 ? 1 : 2, // 1 = Active, 2 = Offline
     created_at: "2001-11-03",
   }));
 

@@ -14,7 +14,7 @@ import type { TableRow } from "../../common-shared/types";
 
 const truckSchema = z.object({
   number_plate: z.string().min(1, "Number plate is required"),
-  status: z.string().min(1, "Status is required"),
+  status: z.number().min(1, "Status is required"),
   capacity_liters: z.string().optional(),
 });
 
@@ -41,20 +41,26 @@ const TruckForm = ({ mode, patchData, onSubmitSuccess }: TruckFormProps) => {
     resolver: zodResolver(truckSchema),
     defaultValues: {
       number_plate: "",
-      status: "active",
+      status: 1,
       capacity_liters: "",
     },
   });
 
   useEffect(() => {
     if (mode === Mode.EDIT && patchData) {
+      const statusValue = (patchData.status as number) || 1;
+      const statusObj =
+        Statuses.find((s) => s.value === statusValue) || Statuses[0];
+      setSelectedStatus(statusObj);
+
       reset({
         number_plate: (patchData.number_plate as string) || "",
-        status: (patchData.status as string) || "active",
+        status: statusValue,
         capacity_liters: (patchData.capacity_liters as string) || "",
       });
     } else if (mode === Mode.ADD) {
-      reset({ number_plate: "", status: "active", capacity_liters: "" });
+      setSelectedStatus(Statuses[0]);
+      reset({ number_plate: "", status: 1, capacity_liters: "" });
     }
   }, [patchData, mode, reset]);
 
@@ -109,7 +115,8 @@ const TruckForm = ({ mode, patchData, onSubmitSuccess }: TruckFormProps) => {
 
       <div className="space-y-2">
         <label className="text-sm font-bold text-emerald-800">
-          Capacity (Liters) <span className="text-slate-400 text-xs font-normal">(optional)</span>
+          Capacity (Liters){" "}
+          <span className="text-slate-400 text-xs font-normal">(optional)</span>
         </label>
         <input
           {...register("capacity_liters")}
@@ -136,7 +143,7 @@ const TruckForm = ({ mode, patchData, onSubmitSuccess }: TruckFormProps) => {
           value={selectedStatus}
           onChange={(status) => {
             setSelectedStatus(status);
-            setValue("status", status.key);
+            setValue("status", status.value);
           }}
         >
           <div className="relative">

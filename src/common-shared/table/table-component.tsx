@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 
 import type { TableColumn, CommonTableProps, TableRow } from "../types";
+import { getStatusIcon } from "../helpers";
 
 const CommonTable = React.memo(
   ({
@@ -66,9 +67,18 @@ const CommonTable = React.memo(
       onSearchChange?.(value);
     };
 
-    const renderCellValue = (value: unknown) => {
+    const renderCellValue = (value: unknown, fieldName: string) => {
       if (value === null || value === undefined || value === "") {
         return "--";
+      }
+
+      // If field is "status", render status icon
+      if (fieldName === "status" && typeof value === "number") {
+        return getStatusIcon(value);
+      }
+
+      if (React.isValidElement(value)) {
+        return value;
       }
 
       return String(value);
@@ -172,7 +182,7 @@ const CommonTable = React.memo(
                       key={`${row.id}-${col.field}`}
                       className="p-4 text-sm text-slate-700 truncate max-w-xs"
                     >
-                      {renderCellValue(row[col.field])}
+                      {renderCellValue(row[col.field], col.field)}
                     </td>
                   ))}
                   {(showDelete || showEdit) && (
