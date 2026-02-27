@@ -6,6 +6,7 @@ import NavBar from "./pages/nav-bar/nav-bar-component";
 import MainMap from "./pages/main-map/map-component";
 import DustBins from "./pages/dust-bins/dust-bins.component";
 import Drivers from "./pages/drivers/drivers-component";
+import Trucks from "./pages/trucks/trucks-component";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/map" element={<MainMap />} />
           <Route path="/bins" element={<DustBins />} />
           <Route path="/drivers" element={<Drivers />} />
+          <Route path="/trucks" element={<Trucks />} />
         </Routes>
       </div>
     </div>
