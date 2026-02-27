@@ -49,3 +49,8 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 #f1f5f9;
 }
+
+@theme {
+  --color-background-green: #386434;
+  --color-dark-background-green: #254f22;
+}

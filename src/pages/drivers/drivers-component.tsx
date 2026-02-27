@@ -30,7 +30,7 @@ const Drivers = () => {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const onEditClicked = async (data: TableRow) => {
-    setSelectedMode(Mode.ADD);
+    setSelectedMode(Mode.EDIT);
     setIsSideBarVisible(true);
     setPatchData(data);
   };
@@ -40,6 +40,11 @@ const Drivers = () => {
     if (result) {
       setDeleteLoading(false);
     }
+  };
+
+  const onAddClicked = () => {
+    setSelectedMode(Mode.ADD);
+    setIsSideBarVisible(true);
   };
 
   const onCloseSideBar = () => {
@@ -121,8 +126,10 @@ const Drivers = () => {
               lastSynced={lastSynced}
               showEdit={true}
               showDelete={true}
+              showAdd={true}
               onEdit={onEditClicked}
               onDelete={onDeleteClicked}
+              onAdd={onAddClicked}
               onSearchChange={handleSearch}
               onLoadMore={() => loadData(false)}
             />

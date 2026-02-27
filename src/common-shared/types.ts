@@ -19,8 +19,10 @@ export type CommonTableProps = {
   lastSynced?: String;
   showEdit?: boolean;
   showDelete?: boolean;
+  showAdd?: boolean;
   onEdit?: (row: TableRow) => void;
   onDelete?: (ids: string[]) => void;
+  onAdd?: () => void;
   onSearchChange?: (value: string) => void;
   onLoadMore?: () => void;
 };

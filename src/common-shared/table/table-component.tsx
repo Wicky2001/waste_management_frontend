@@ -1,4 +1,11 @@
 import React, { useState, type UIEvent } from "react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Button,
+} from "@headlessui/react";
 
 import {
   ChevronDown,
@@ -8,6 +15,8 @@ import {
   Loader2,
   Search,
   Trash2,
+  Ellipsis,
+  CirclePlus,
 } from "lucide-react";
 
 import type { TableColumn, CommonTableProps, TableRow } from "../types";
@@ -21,7 +30,9 @@ const CommonTable = React.memo(
     lastSynced,
     showEdit = false,
     showDelete = false,
+    showAdd = false,
     onEdit,
+    onAdd,
     onDelete,
     onSearchChange,
     onLoadMore,
@@ -66,8 +77,18 @@ const CommonTable = React.memo(
     return (
       <div className="flex flex-col h-full w-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
-          <div className="relative w-full sm:w-80">
+
+        <div className="flex flex-row sm:flex-row items-center justify-between p-4 gap-4 border-b border-slate-100 bg-slate-50/50 shrink-0">
+          {showAdd && (
+            <Button
+              className="cursor-pointer inline-flex items-center gap-2 rounded-md bg-dark-background-green px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-background-green data-open:bg-gray-700"
+              onClick={() => onAdd?.()}
+            >
+              <CirclePlus />
+              Add
+            </Button>
+          )}
+          <div className="relative w-full lg:w-140">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               size={18}
@@ -75,12 +96,11 @@ const CommonTable = React.memo(
             <input
               type="text"
               placeholder="Search records..."
-              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 placeholder:text-slate-400 focus:ring-1 focus:ring-background-green outline-none transition-all"
               value={searchTerm}
               onChange={(e) => handleSearchChange(e.target.value)}
             />
           </div>
-
           <div className="flex items-center gap-3 text-xs text-slate-500">
             {lastSynced && (
               <div className="flex items-center gap-1.5 font-medium">
@@ -135,7 +155,7 @@ const CommonTable = React.memo(
                 ))}
 
                 {(showDelete || showEdit) && (
-                  <th className="p-4 text-xs font-semibold text-slate-600 uppercase tracking-wider text-right border-b border-slate-200 bg-slate-50 w-32">
+                  <th className="p-4 text-xs text-center font-semibold text-slate-600 uppercase tracking-wider  border-b border-slate-200 bg-slate-50 w-32">
                     Actions
                   </th>
                 )}
@@ -156,25 +176,39 @@ const CommonTable = React.memo(
                     </td>
                   ))}
                   {(showDelete || showEdit) && (
-                    <td className="p-4 text-right w-32">
-                      <div className="flex items-center justify-end gap-2">
-                        {showEdit && (
-                          <button
-                            onClick={() => onEdit?.(row)}
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-md"
-                          >
-                            <Edit2 size={16} />
-                          </button>
-                        )}
-                        {showDelete && (
-                          <button
-                            onClick={() => onDelete?.([row.id])}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        )}
-                      </div>
+                    <td className="p-4 flex flex-row justify-center align-center">
+                      <Menu>
+                        <MenuButton className="flex justify-center items-center px-2 py-1 text-black rounded transition-colors cursor-pointer">
+                          <Ellipsis size={15} />
+                        </MenuButton>
+                        <MenuItems
+                          anchor="bottom end"
+                          className="[--anchor-gap:3px] [--anchor-padding:3px] bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[120px]"
+                        >
+                          {showEdit && (
+                            <MenuItem>
+                              <button
+                                onClick={() => onEdit?.(row)}
+                                className="flex items-center gap-2 w-full px-3 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                              >
+                                <Edit2 size={14} />
+                                Edit
+                              </button>
+                            </MenuItem>
+                          )}
+                          {showDelete && (
+                            <MenuItem>
+                              <button
+                                onClick={() => onDelete?.([row.id])}
+                                className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                              >
+                                <Trash2 size={14} />
+                                Delete
+                              </button>
+                            </MenuItem>
+                          )}
+                        </MenuItems>
+                      </Menu>
                     </td>
                   )}
                 </tr>
