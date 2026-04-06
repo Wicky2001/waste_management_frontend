@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/web';
 
@@ -30,8 +31,8 @@ export const api = {
   get: (endpoint: string, queryParams?: Record<string, any>) => 
     withRefreshLogic(() => client.get(endpoint, { params: queryParams })),
 
-  post: (endpoint: string, body?: any) => 
-    withRefreshLogic(() => client.post(endpoint, body)),
+  post: (endpoint: string, body?: any, config?: AxiosRequestConfig) => 
+    withRefreshLogic(() => client.post(endpoint, body, config)),
 
   patch: (endpoint: string, body?: any) => 
     withRefreshLogic(() => client.patch(endpoint, body)),

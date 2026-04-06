@@ -7,6 +7,7 @@ import MainMap from "./pages/main-map/map-component";
 import DustBins from "./pages/dust-bins/dust-bins.component";
 import Drivers from "./pages/drivers/drivers-component";
 import Trucks from "./pages/trucks/trucks-component";
+import Login from "./pages/login/login-component";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
       <div className="main-container">
         <Routes>
+          <Route path="/login" element={<Login/>}/>
           <Route path="/map" element={<MainMap />} />
           <Route path="/bins" element={<DustBins />} />
           <Route path="/drivers" element={<Drivers />} />
