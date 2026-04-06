@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.18",
     "@vis.gl/react-google-maps": "^1.7.1",
+    "axios": "^1.14.0",
     "lucide-react": "^0.574.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
