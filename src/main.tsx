@@ -9,7 +9,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 console.log(API_KEY);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
     <APIProvider
       apiKey={API_KEY}
       onLoad={() => console.log("Maps API has loaded.")}
@@ -18,5 +18,5 @@ createRoot(document.getElementById("root")!).render(
         <App />
       </BrowserRouter>
     </APIProvider>
-  </StrictMode>,
+  // </StrictMode>,
 );

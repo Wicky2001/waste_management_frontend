@@ -1,31 +1,47 @@
-import type { TableGetRequestParams } from "../../common-shared/types";
+import type { AxiosRequestConfig } from 'axios';
+import { api } from '../../common-shared/service/apiClient';
 
-const fetchGateways = async ({ start, end, search }: TableGetRequestParams) => {
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  const count = end - start;
-  const records = Array.from({ length: count }).map((_, i) => ({
-    id: `gw-${start + i}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
-    name: `${search || "Gateway"} Node #${start + i + 1}`,
-    coordinates: `${(Math.random() * 90).toFixed(4)}, ${(Math.random() * 180).toFixed(4)}`,
-    notes: "System-generated node data",
-    createdAt: "2001-11-03",
-  }));
+export type DustBinSortField =
+  | 'binCode'
+  | 'binType'
+  | 'serviceAreaId'
+  | 'serviceAreaName'
+  | 'createdAt';
 
-  return {
-    records,
-    total: 500,
-    timestamp: "2001-11-03",
-  };
+export type DustBinSortOrder = 'ASC' | 'DESC';
+
+export type DustBinQueryParams = {
+  page: number;
+  limit: number;
+  search?: string;
+  sortOrder?: DustBinSortOrder;
+  sortField?: DustBinSortField;
+  serviceAreaId?: number;
+  binType?: string;
 };
 
-const deleteGateway = async (id: number) => {
-  await new Promise((r) => setTimeout(r, 500));
-  return { success: true };
+export type DustBinRecord = {
+  id: string;
+  binCode?: string;
+  binType?: string;
+  serviceAreaId?: number;
+  serviceAreaName?: string;
+  createdAt?: string;
+  [key: string]: unknown;
 };
 
-const updateGateway = async (id: number, data: any) => {
-  await new Promise((r) => setTimeout(r, 500));
-  return { success: true };
+export type DustBinListResponse = {
+  records: DustBinRecord[];
+  total: number;
+  timestamp?: string;
 };
 
-export { fetchGateways, deleteGateway, updateGateway };
+const DUST_BIN_ENDPOINT = '/dust-bins';
+
+export const fetchDustBins = async (
+  params: DustBinQueryParams,
+  config?: AxiosRequestConfig,
+) => {
+  const response = await api.get(DUST_BIN_ENDPOINT, params, config);
+  return response.data as DustBinListResponse;
+};

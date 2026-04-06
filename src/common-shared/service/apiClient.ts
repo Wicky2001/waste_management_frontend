@@ -28,8 +28,8 @@ const withRefreshLogic = async (requestFunction: () => Promise<any>) => {
 
 export const api = {
 
-  get: (endpoint: string, queryParams?: Record<string, any>) => 
-    withRefreshLogic(() => client.get(endpoint, { params: queryParams })),
+  get: (endpoint: string, queryParams?: Record<string, any>, config?: AxiosRequestConfig) => 
+    withRefreshLogic(() => client.get(endpoint, { params: queryParams, ...config })),
 
   post: (endpoint: string, body?: any, config?: AxiosRequestConfig) => 
     withRefreshLogic(() => client.post(endpoint, body, config)),

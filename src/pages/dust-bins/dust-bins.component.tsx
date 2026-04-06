@@ -1,76 +1,29 @@
-import { useEffect, useState, useRef, useCallback } from "react";
-import type { TableRow } from "../../common-shared/types";
 import CommonTable from "../../common-shared/table/table-component";
 import PageHeader from "../../common-shared/page-header/header";
-import { fetchGateways } from "./service";
 import { Trash } from "lucide-react";
+import { useDustBins } from "./use-dust-bins";
 
 const DustBins = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<TableRow[]>([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [lastSynced, setLastSynced] = useState<string>("");
-  const [searchText, setSearchText] = useState("");
-
-  const offsetRef = useRef(0);
-  const isFetchingRef = useRef(false);
-  const pageSize = 50;
-
-  const loadData = useCallback(
-    async (isInitial = false, query = searchText) => {
-      if (isFetchingRef.current) return;
-
-      isFetchingRef.current = true;
-      setLoading(true);
-
-      const start = isInitial ? 0 : offsetRef.current;
-      const end = start + pageSize;
-
-      try {
-        const result = await fetchGateways({
-          start,
-          end,
-          search: query,
-        });
-        if (isInitial) {
-          setData(result.records as TableRow[]);
-          offsetRef.current = pageSize;
-        } else {
-          setData((prev) => [...prev, ...result.records] as TableRow[]);
-          offsetRef.current += pageSize;
-        }
-
-        setTotalRecords(result.total);
-        setLastSynced(result.timestamp);
-      } catch (error) {
-        console.error("Failed to fetch gateways", error);
-      } finally {
-        setLoading(false);
-        isFetchingRef.current = false;
-      }
-    },
-    [searchText],
-  );
-
-  useEffect(() => {
-    loadData(true);
-  }, [loadData]);
-
-  const handleSearch = useCallback((query: string) => {
-    setSearchText(query);
-    offsetRef.current = 0;
-  }, []);
+  const {
+    loading,
+    rows,
+    totalRecords,
+    lastSynced,
+    handleSearchChange,
+    handleLoadMore,
+    handleSortChange,
+  } = useDustBins();
 
   const columns = [
-    { headerName: "Id", field: "code", width: 250 },
-    { headerName: "Service Area", field: "serviceArea", width: 220 },
+    { headerName: "Bin Code", field: "binCode", width: 220 },
+    { headerName: "Bin Type", field: "binType", width: 180 },
     {
-      headerName: "Sensor",
-      field: "sensorSerialNumber",
-      width: 220,
+      headerName: "Service Area Id",
+      field: "serviceAreaId",
+      width: 180,
     },
-    { headerName: "Sensor Status", field: "sensorStatus", width: 220 },
-    { headerName: "Created At", field: "createdAt", width: 250 },
+    { headerName: "Service Area Name", field: "serviceAreaName", width: 240 },
+    { headerName: "Created At", field: "createdAt", width: 220 },
   ];
 
   return (
@@ -85,14 +38,15 @@ const DustBins = () => {
         <div className="w-full overflow-hidden">
           <CommonTable
             cols={columns}
-            rows={data}
+            rows={rows}
             loading={loading}
             totalRecords={totalRecords}
             lastSynced={lastSynced}
             showEdit={false}
             showDelete={false}
-            onSearchChange={handleSearch}
-            onLoadMore={() => loadData(false)}
+            onSearchChange={handleSearchChange}
+            onLoadMoreRecords={handleLoadMore}
+            onSortChange={handleSortChange}
           />
         </div>
       </div>

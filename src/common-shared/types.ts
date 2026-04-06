@@ -24,7 +24,11 @@ export type CommonTableProps = {
   onDelete?: (ids: string[]) => void;
   onAdd?: () => void;
   onSearchChange?: (value: string) => void;
-  onLoadMore?: () => void;
+  onLoadMoreRecords?: () => void;
+  onSortChange?: (
+    field: string,
+    order: "asc" | "desc" | null,
+  ) => void;
 };
 
 export type TableGetRequestParams = {

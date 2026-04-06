@@ -36,7 +36,8 @@ const CommonTable = React.memo(
     onAdd,
     onDelete,
     onSearchChange,
-    onLoadMore,
+    onLoadMoreRecords: onLoadMore,
+    onSortChange,
   }: CommonTableProps) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortField, setSortField] = useState<string | null>(null);
@@ -60,6 +61,7 @@ const CommonTable = React.memo(
             : "asc";
       setSortField(nextOrder ? field : null);
       setSortOrder(nextOrder);
+      onSortChange?.(field, nextOrder);
     };
 
     const handleSearchChange = (value: string) => {
@@ -130,7 +132,7 @@ const CommonTable = React.memo(
           onScroll={handleScroll}
           className="overflow-auto grow relative scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100"
         >
-          <table className="w-full text-left border-collapse min-w-[900px]">
+          <table className="w-full text-left border-collapse min-w-225">
             <thead className="sticky top-0 z-30 shadow-sm">
               <tr className="bg-slate-50">
                 {cols.map((col: TableColumn) => (
@@ -193,7 +195,7 @@ const CommonTable = React.memo(
                         </MenuButton>
                         <MenuItems
                           anchor="bottom end"
-                          className="[--anchor-gap:3px] [--anchor-padding:3px] bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[120px]"
+                          className="[--anchor-gap:3px] [--anchor-padding:3px] bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-30"
                         >
                           {showEdit && (
                             <MenuItem>

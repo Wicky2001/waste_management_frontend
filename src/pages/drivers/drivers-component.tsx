@@ -126,7 +126,7 @@ const Drivers = () => {
               onDelete={onDeleteClicked}
               onAdd={onAddClicked}
               onSearchChange={handleSearch}
-              onLoadMore={() => loadData(false)}
+              onLoadMoreRecords={() => loadData(false)}
             />
           </div>
         </div>
