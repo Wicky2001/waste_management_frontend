@@ -4,6 +4,7 @@ export type TableColumn = {
   field: string;
   headerName: string;
   width?: number;
+  sortable?: boolean;
 };
 
 export type TableRow = {

@@ -1,18 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import type { TableRow } from '../../common-shared/types';
-import {
-  fetchDustBins,
-  type DustBinSortField,
-  type DustBinSortOrder,
-} from './service';
+import { fetchDustBins } from './service';
+import type { DustBinFilters, DustBinSortField, DustBinSortOrder } from './types';
 
 const DEFAULT_LIMIT = 50;
-
-export type DustBinFilters = {
-  search?: string;
-  serviceAreaId?: number;
-  binType?: string;
-};
 
 export const useDustBins = (initialLimit = DEFAULT_LIMIT) => {
   const [loading, setLoading] = useState(false);
@@ -64,19 +57,31 @@ export const useDustBins = (initialLimit = DEFAULT_LIMIT) => {
         return;
       }
 
-      const nextRows = result.records as TableRow[];
+      const nextRows = result.data.records as TableRow[];
 
       const mode = requestParams.page === 1 ? 'replace' : 'append';
 
       setRows((currentRows) =>
         mode === 'append' ? [...currentRows, ...nextRows] : nextRows
       );
-      setTotalRecords(result.total);
-      setLastSynced(result.timestamp || '');
+      setTotalRecords(result.data.total);
+      setLastSynced(result.data.timestamp || '');
     } catch (error) {
-      if ((error as { name?: string })?.name === 'CanceledError') {
+      if (axios.isCancel(error)) {
         return;
       }
+
+      let message = 'Failed to fetch bins. Please try again.';
+      if (axios.isAxiosError(error)) {
+        message =
+          (error.response?.data as { message?: string } | undefined)?.message ||
+          message;
+      }
+
+      toast.error(message, {
+        position: 'bottom-right',
+      });
+
       console.error('Failed to fetch dust bins', error);
     } finally {
       if (requestId === requestIdRef.current) {

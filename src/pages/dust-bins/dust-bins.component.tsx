@@ -1,6 +1,8 @@
 import CommonTable from "../../common-shared/table/table-component";
 import PageHeader from "../../common-shared/page-header/header";
 import { Trash } from "lucide-react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDustBins } from "./use-dust-bins";
 
 const DustBins = () => {
@@ -15,15 +17,21 @@ const DustBins = () => {
   } = useDustBins();
 
   const columns = [
-    { headerName: "Bin Code", field: "binCode", width: 220 },
-    { headerName: "Bin Type", field: "binType", width: 180 },
+    { headerName: "Bin Code", field: "binCode", width: 220, sortable: true },
+    { headerName: "Bin Type", field: "binType", width: 180, sortable: true },
     {
-      headerName: "Service Area Id",
-      field: "serviceAreaId",
+      headerName: "ServiceName",
+      field: "serviceAreaName",
       width: 180,
+      sortable: true,
     },
-    { headerName: "Service Area Name", field: "serviceAreaName", width: 240 },
-    { headerName: "Created At", field: "createdAt", width: 220 },
+    {
+      headerName: "Service Area Name",
+      field: "serviceAreaName",
+      width: 240,
+      sortable: true,
+    },
+    { headerName: "Created At", field: "createdAt", width: 220, sortable: true },
   ];
 
   return (
@@ -49,6 +57,17 @@ const DustBins = () => {
             onSortChange={handleSortChange}
           />
         </div>
+
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="colored"
+        />
       </div>
     </div>
   );

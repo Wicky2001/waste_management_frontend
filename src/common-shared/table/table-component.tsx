@@ -138,30 +138,32 @@ const CommonTable = React.memo(
                 {cols.map((col: TableColumn) => (
                   <th
                     key={col.field}
-                    onClick={() => toggleSort(col.field)}
-                    className="p-4 text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors border-b border-slate-200"
+                    onClick={col.sortable ? () => toggleSort(col.field) : undefined}
+                    className={`p-4 text-xs font-semibold text-slate-600 uppercase tracking-wider transition-colors border-b border-slate-200 ${col.sortable ? "cursor-pointer hover:bg-slate-100" : ""}`}
                     style={{ width: col.width ? `${col.width}px` : "auto" }}
                   >
                     <div className="flex items-center gap-2">
                       {col.headerName}
-                      <div className="flex flex-col text-slate-300">
-                        <ChevronUp
-                          size={10}
-                          className={
-                            sortField === col.field && sortOrder === "asc"
-                              ? "text-blue-500"
-                              : ""
-                          }
-                        />
-                        <ChevronDown
-                          size={10}
-                          className={
-                            sortField === col.field && sortOrder === "desc"
-                              ? "text-blue-500"
-                              : ""
-                          }
-                        />
-                      </div>
+                      {col.sortable && (
+                        <div className="flex flex-col text-slate-300">
+                          <ChevronUp
+                            size={10}
+                            className={
+                              sortField === col.field && sortOrder === "asc"
+                                ? "text-blue-500"
+                                : ""
+                            }
+                          />
+                          <ChevronDown
+                            size={10}
+                            className={
+                              sortField === col.field && sortOrder === "desc"
+                                ? "text-blue-500"
+                                : ""
+                            }
+                          />
+                        </div>
+                      )}
                     </div>
                   </th>
                 ))}

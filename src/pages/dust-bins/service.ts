@@ -1,42 +1,8 @@
 import type { AxiosRequestConfig } from 'axios';
 import { api } from '../../common-shared/service/apiClient';
+import type { DustBinListResponse, DustBinQueryParams } from './types';
 
-export type DustBinSortField =
-  | 'binCode'
-  | 'binType'
-  | 'serviceAreaId'
-  | 'serviceAreaName'
-  | 'createdAt';
-
-export type DustBinSortOrder = 'ASC' | 'DESC';
-
-export type DustBinQueryParams = {
-  page: number;
-  limit: number;
-  search?: string;
-  sortOrder?: DustBinSortOrder;
-  sortField?: DustBinSortField;
-  serviceAreaId?: number;
-  binType?: string;
-};
-
-export type DustBinRecord = {
-  id: string;
-  binCode?: string;
-  binType?: string;
-  serviceAreaId?: number;
-  serviceAreaName?: string;
-  createdAt?: string;
-  [key: string]: unknown;
-};
-
-export type DustBinListResponse = {
-  records: DustBinRecord[];
-  total: number;
-  timestamp?: string;
-};
-
-const DUST_BIN_ENDPOINT = '/dust-bins';
+const DUST_BIN_ENDPOINT = '/bins';
 
 export const fetchDustBins = async (
   params: DustBinQueryParams,
