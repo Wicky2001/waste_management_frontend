@@ -43,3 +43,6 @@ packages/react-devtools-timeline/dist
 
 
 .env
+.env.development
+.env.production
+.env.test
