@@ -1,6 +1,6 @@
 import type { TableGetRequestParams } from "../../common-shared/types";
 
-const fetchTrucks = async ({ start, end, search }: TableGetRequestParams) => {
+const fetchTrucks = async ({ start, end, search: _search }: TableGetRequestParams) => {
   await new Promise((resolve) => setTimeout(resolve, 800));
   const count = end - start;
 
@@ -23,12 +23,12 @@ const fetchTrucks = async ({ start, end, search }: TableGetRequestParams) => {
   };
 };
 
-const deleteTrucks = async (ids: string[]) => {
+const deleteTrucks = async (_ids: string[]) => {
   await new Promise((resolve) => setTimeout(resolve, 800));
   return { success: true };
 };
 
-const editTruck = async (id: number, data: any) => {
+const editTruck = async (_id: number, _data: any) => {
   await new Promise((resolve) => setTimeout(resolve));
   return { success: true };
 };

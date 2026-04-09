@@ -20,12 +20,12 @@ const fetchDrivers = async ({ start, end, search }: TableGetRequestParams) => {
   };
 };
 
-const deleteDrivers = async (ids: string[]) => {
+const deleteDrivers = async (_ids: string[]) => {
   await new Promise((resolve) => setTimeout(resolve, 800));
   return { success: true };
 };
 
-const editDriver = async (id: number, data: any) => {
+const editDriver = async (_id: number, _data: any) => {
   await new Promise((resolve) => setTimeout(resolve));
   return { success: true };
 };
