@@ -7,11 +7,12 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: waste-management-frontend-service
+  ECR_REPOSITORY: waste-management-backend-service
   ECS_CLUSTER: waste-management-app
-  ECS_SERVICE: waste-management-frontend-service
-  ECS_TASK_DEFINITION: ./aws/task_definition.json
-  CONTAINER_NAME: waste-management-frontend-container
+  ECS_SERVICE: waste-management-backend-service-service-vjjwdc5o
+  ECS_TASK_DEFINITION: .aws/task_definition.json
+  CONTAINER_NAME: waste-management-backend-container
+
                 # Matches the name inside your JSON
 
 jobs:
