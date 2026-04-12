@@ -1,10 +1,12 @@
 import { useEffect, useState, type FocusEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Joi from 'joi';
 import { Mail, Lock, Trash2, ArrowRight, Loader2, Eye, EyeOff } from 'lucide-react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { validateWithJoi, type ValidationErrors } from '../../common-shared/validation/joi';
 import { useLogin } from './use-login';
+import { useAuth } from '../../common-shared/auth/auth-context';
 
 type LoginFormValues = {
   email: string;
@@ -31,6 +33,8 @@ const loginSchema = Joi.object<LoginFormValues>({
 }).required();
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { refreshUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [touched, setTouched] = useState({
@@ -57,7 +61,7 @@ const Login = () => {
 
  
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isFormValid) {
@@ -65,7 +69,12 @@ const Login = () => {
       return;
     }
 
-    submitLogin({ email, password });
+    const result = await submitLogin({ email, password });
+
+    if (result?.accessToken) {
+      await refreshUser();
+      navigate('/bins', { replace: true });
+    }
   };
 
   const handleFieldBlur = (field: keyof LoginFormValues) => (_event: FocusEvent<HTMLInputElement>) => {

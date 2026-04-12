@@ -1,19 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { api } from '../../common-shared/service/apiClient';
-
-export type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-type LoginResponse = {
-  success: boolean;
-  message: string;
-};
-
-const LOGIN_ENDPOINT = '/auth/login';
+import { login, type AuthResponse, type LoginPayload } from '../../common-shared/service/apiClient';
 
 export const useLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,22 +22,14 @@ export const useLogin = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await api.post(
-        LOGIN_ENDPOINT,
-        payload,
-        {
-          signal: controller.signal,
-        },
-      );
-
-      const data = response?.data as LoginResponse | undefined;
+      const data = await login(payload, { signal: controller.signal });
       const message = data?.message || 'Login successful';
 
       toast.success(message, {
         position: 'bottom-right',
       });
 
-      return data;
+      return data as AuthResponse;
     } catch (error: unknown) {
       if (axios.isCancel(error)) {
         return null;

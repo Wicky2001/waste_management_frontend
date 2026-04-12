@@ -57,4 +57,5 @@ export type NavigationBarProps = {
   name: string;
   url: string;
   Icon: LucideIcon;
+  roles?: string[];
 };
