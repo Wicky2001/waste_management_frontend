@@ -1,23 +1,38 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Power } from "lucide-react";
 import menuItems from "./menue";
 import styles from "./nav-bar-component.module.scss";
 import { useAuth } from "../../common-shared/auth/auth-context";
+import { logout } from "../../common-shared/service/apiClient";
 
 const NavBar = () => {
   const location = useLocation();
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, setUser } = useAuth();
 
   const filteredMenuItems = menuItems.filter((item) => {
     if (!item.roles?.length) {
       return true;
     }
 
-    if (!user.role) {
+    if (!user?.role) {
       return false;
     }
 
     return item.roles.includes(user.role);
   });
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUser({ isAuthenticated: false, role: null });
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      setUser({ isAuthenticated: false, role: null });
+      navigate("/login", { replace: true });
+    }
+  };
 
   return (
     <nav className={styles.mainContainer}>
@@ -40,6 +55,17 @@ const NavBar = () => {
           </li>
         ))}
       </ul>
+
+      <div className={styles.logoutArea}>
+        <button
+          onClick={handleLogout}
+          className={styles.logoutButton}
+          title="Logout"
+        >
+          <Power size={18} />
+          <span>Logout</span>
+        </button>
+      </div>
     </nav>
   );
 };

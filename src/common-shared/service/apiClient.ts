@@ -85,7 +85,6 @@ client.interceptors.response.use(
       return client(originalRequest);
     } catch (refreshError) {
       clearAccessToken();
-      window.location.href = "/login";
       throw refreshError;
     }
   },

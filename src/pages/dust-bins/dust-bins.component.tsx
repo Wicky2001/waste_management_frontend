@@ -20,8 +20,8 @@ const DustBins = () => {
     { headerName: "Bin Code", field: "binCode", width: 220, sortable: true },
     { headerName: "Bin Type", field: "binType", width: 180, sortable: true },
     {
-      headerName: "ServiceName",
-      field: "serviceAreaName",
+      headerName: "Service Area ID",
+      field: "serviceAreaId",
       width: 180,
       sortable: true,
     },

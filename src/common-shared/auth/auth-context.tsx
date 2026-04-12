@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { Loader2 } from "lucide-react";
 import { getCurrentUser } from "../service/apiClient";
 
 type UserState = {
@@ -38,15 +37,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const verifyUser = async () => {
       try {
         await refreshUser();
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     verifyUser();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const value = useMemo(
@@ -59,23 +66,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     [user, isLoading],
   );
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-6">
-        <div className="w-full max-w-sm bg-white border border-slate-200 rounded-2xl shadow-sm p-8 flex flex-col items-center">
-          <div className="w-14 h-14 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center">
-            <Loader2 className="w-7 h-7 text-[#3a6845] animate-spin" />
-          </div>
-          <h2 className="mt-4 text-lg font-bold text-slate-900 tracking-tight">Please wait</h2>
-          <p className="mt-1 text-sm text-slate-500 font-medium text-center">
-            Checking your authentication status...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {isLoading && (
+        <div className="w-full h-1 bg-linear-to-r from-[#3a6845] to-[#63A361] animate-pulse fixed top-0 left-0 z-50" />
+      )}
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {

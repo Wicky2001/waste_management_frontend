@@ -6,8 +6,13 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
+
+  if (isLoading) {
+    // Keep current content rendered while auth bootstrap is running.
+    return <Outlet />;
+  }
 
   if (!user.isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location }} />;
