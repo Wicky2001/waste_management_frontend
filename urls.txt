@@ -1,1 +1,4 @@
 http://waste-management-261164769.us-east-1.elb.amazonaws.com:3000
+http://waste-management-261164769.us-east-1.elb.amazonaws.com:5000
+http://backend:5000/web
+waste-management-261164769.us-east-1.elb.amazonaws.com
